@@ -1,0 +1,1183 @@
+package com.firstHP;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridLayout;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Random;
+
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+
+/**
+ * @author MSFATA ProgrammingHelp
+ *
+ */
+public class MathGame extends JFrame implements Runnable {
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private static JLabel tfFirstNumber;
+	private static JLabel tfSecondNumber;
+	private static JTextField tfAnswer;
+	private static JLabel tfCorrect;
+	private static JLabel tfIncorrect;
+	protected static int counterCorrect = 1;
+	protected static int uncorrectCounter = 1;
+	private static int speed;
+	private JButton btnEasy;
+	private JButton btnHard;
+	private JButton btnMid;
+	private JPanel hardnessLevelPanel;
+	private JPanel rgbColorPanel;
+	private JButton lblGreen;
+	private JButton lblRed;
+	private JButton lblBlue;
+	private JTextField lbFreeLeft;
+	private static JLabel tfResult;
+	private JTextField lbFreeRight;
+	private JButton button9;
+	private JButton button5;
+	private JButton button0;
+	protected String number;
+	private JButton buttonEnter;
+	private JButton level3Button;
+	private JButton level1Button;
+	private JButton level2Button;
+	private JPanel operationFrame;
+	private JButton plusButton;
+	private JButton minusButton;
+	private JButton devisionButton;
+	private JButton mutiplicationButton;
+	static JLabel tfOperation;
+	protected static boolean levelOne;
+	protected static boolean levelTwo;
+	protected static boolean levelThree;
+	private JButton restartButton;
+	private JButton exitButton;
+	public static int uncor;
+	public static int cor;
+	private static double result;
+	@SuppressWarnings("unused")
+	private static int x = 1;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private static boolean running = false;
+	protected static boolean TWENTY;
+	protected static boolean SIXTEEN;
+	protected static boolean TWELVE;
+	protected static boolean TWENTYFOUR;
+	static MathGame frame;
+	static Thread t;
+	private static JTextField tfRoundCounter;
+	private static int round = 1;
+	private JButton buttonDecimal;
+	private double result1;
+	private double result2;
+	protected boolean isSmallScreen;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+		frame = new MathGame();
+		frame.setVisible(true);
+		levelOne = true;
+		tfRoundCounter.setText("" + round);
+//		MultiThreadFrame m=new MultiThreadFrame();
+		t = new Thread(frame);
+		running = true;
+		t.start();
+//		MultiThreadFrame.startThread();
+//		startThread();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public MathGame() {
+		setBackground(Color.BLACK);
+
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setBounds(0, 0, 1010, 686);
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		int height = gd.getDisplayMode().getWidth();
+		int width = gd.getDisplayMode().getHeight();
+		setBounds(0, 0, height, width);
+		isSmallScreen = false;
+//		setBounds(0, 0, 1280, 800);
+		contentPane = new JPanel();
+		contentPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if (isSmallScreen == false) {
+					setBounds(0, 0, 1280, 800);
+					isSmallScreen = true;
+				} else {
+					setBounds(0, 0, height, width);
+					isSmallScreen = false;
+				}
+			}
+		});
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new TitledBorder(new CompoundBorder(new CompoundBorder(new LineBorder(new Color(255, 255, 255), 9), new LineBorder(new Color(240, 240, 240), 7)), new LineBorder(new Color(200, 200, 200), 27)), "BY SHAHED FATA", TitledBorder.CENTER, TitledBorder.BELOW_TOP, null, new Color(0, 0, 0)));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JPanel upperPanel = new JPanel();
+		upperPanel.setBorder(new LineBorder(new Color(248, 248, 255), 5));
+		upperPanel.setBounds(122, 63, 1033, 247);
+		contentPane.add(upperPanel);
+		upperPanel.setLayout(new GridLayout(3, 0, 0, 0));
+
+		tfFirstNumber = new JLabel();
+		tfFirstNumber.setFont(new Font("DS-Digital", Font.BOLD, 60));
+		upperPanel.add(tfFirstNumber);
+		tfFirstNumber.setHorizontalAlignment(SwingConstants.CENTER);
+
+		tfOperation = new JLabel("+");
+		tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/+.png")));
+		tfOperation.setFont(new Font("Dialog", Font.BOLD, 1));
+		tfOperation.setHorizontalAlignment(SwingConstants.CENTER);
+		upperPanel.add(tfOperation);
+
+		tfSecondNumber = new JLabel();
+		tfSecondNumber.setFont(new Font("DS-Digital", Font.BOLD, 60));
+		tfSecondNumber.setHorizontalAlignment(SwingConstants.CENTER);
+		upperPanel.add(tfSecondNumber);
+
+		lbFreeLeft = new JTextField();
+		lbFreeLeft.setBorder(null);
+		lbFreeLeft.setBackground(new Color(230, 230, 250));
+		lbFreeLeft.setHorizontalAlignment(SwingConstants.CENTER);
+		lbFreeLeft.setFont(new Font("Tahoma", Font.BOLD, 18));
+		upperPanel.add(lbFreeLeft);
+
+		tfAnswer = new JTextField();
+		tfAnswer.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				number = "";
+				tfAnswer.setText("");
+			}
+		});
+		tfAnswer.setCaretColor(Color.BLACK);
+		tfAnswer.setBackground(Color.WHITE);
+		tfAnswer.setBorder(new LineBorder(new Color(255, 255, 255), 10, true));
+		tfAnswer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				calculate();
+			}
+		});
+		tfAnswer.setFont(new Font("DS-Digital", Font.BOLD, 60));
+		tfAnswer.setHorizontalAlignment(SwingConstants.CENTER);
+		upperPanel.add(tfAnswer);
+		tfAnswer.setColumns(10);
+
+		lbFreeRight = new JTextField();
+		lbFreeRight.setBorder(null);
+		lbFreeRight.setBackground(new Color(230, 230, 250));
+		lbFreeRight.setHorizontalAlignment(SwingConstants.CENTER);
+		lbFreeRight.setFont(new Font("Tahoma", Font.BOLD, 18));
+		upperPanel.add(lbFreeRight);
+
+		tfIncorrect = new JLabel();
+		tfIncorrect.setForeground(Color.RED);
+		tfIncorrect.setFont(new Font("DS-Digital", Font.BOLD, 60));
+		tfIncorrect.setHorizontalAlignment(SwingConstants.CENTER);
+		upperPanel.add(tfIncorrect);
+
+		tfResult = new JLabel();
+//		tfResult.setIcon(new ImageIcon(MultiThreadFrame.class.getResource("/DigitsImages/FU8l.gif")));
+		tfResult.setForeground(new Color(0, 128, 0));
+		tfResult.setBorder(null);
+		tfResult.setBackground(SystemColor.inactiveCaption);
+		tfResult.setHorizontalAlignment(SwingConstants.CENTER);
+		tfResult.setFont(new Font("DS-Digital", Font.PLAIN, 40));
+		upperPanel.add(tfResult);
+
+		tfCorrect = new JLabel();
+		tfCorrect.setForeground(Color.BLUE);
+		tfCorrect.setFont(new Font("DS-Digital", Font.BOLD, 60));
+		tfCorrect.setHorizontalAlignment(SwingConstants.CENTER);
+		upperPanel.add(tfCorrect);
+
+		hardnessLevelPanel = new JPanel();
+		hardnessLevelPanel.setBackground(Color.WHITE);
+		hardnessLevelPanel.setBorder(null);
+		hardnessLevelPanel.setBounds(205, 452, 351, 302);
+		contentPane.add(hardnessLevelPanel);
+		hardnessLevelPanel.setLayout(new GridLayout(0, 1, 0, 0));
+
+		btnEasy = new JButton("");
+		btnEasy.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_easy.png")));
+		btnEasy.setBorder(null);
+		btnEasy.setFont(new Font("Tahoma", Font.BOLD, 18));
+		btnEasy.setForeground(Color.BLACK);
+		btnEasy.setBackground(Color.WHITE);
+		hardnessLevelPanel.add(btnEasy);
+
+		btnMid = new JButton("");
+		btnMid.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_normal.png")));
+		btnMid.setBorder(null);
+		btnMid.setFont(new Font("Tahoma", Font.BOLD, 18));
+		btnMid.setForeground(Color.BLACK);
+		btnMid.setBackground(Color.WHITE);
+		hardnessLevelPanel.add(btnMid);
+
+		btnHard = new JButton("");
+		btnHard.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_hard.png")));
+		btnHard.setBorder(null);
+		btnHard.setFont(new Font("Tahoma", Font.BOLD, 18));
+		btnHard.setForeground(Color.BLACK);
+		btnHard.setBackground(Color.WHITE);
+		hardnessLevelPanel.add(btnHard);
+
+		JPanel numberButtonPanel = new JPanel();
+		numberButtonPanel.setBorder(new EmptyBorder(4, 0, 0, 0));
+		numberButtonPanel.setBackground(Color.WHITE);
+		numberButtonPanel.setBounds(598, 312, 627, 442);
+		contentPane.add(numberButtonPanel);
+
+		JButton button1 = new JButton("");
+		button1.setBorder(null);
+		button1.setBackground(Color.WHITE);
+		button1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				try {
+					if (!number.equals(null)) {
+						number = number + 1;
+					}
+				} catch (Exception any) {
+					number = "1";
+				}
+
+				tfAnswer.setText(number);
+				tfAnswer.requestFocus();
+			}
+
+		});
+		numberButtonPanel.setLayout(new GridLayout(0, 4, 0, 0));
+		button1.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/1.png")));
+		numberButtonPanel.add(button1);
+
+		JButton button2 = new JButton("");
+		button2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 2;
+					}
+				} catch (Exception any) {
+					number = "2";
+				}
+
+				tfAnswer.setText(number);
+				tfAnswer.requestFocus();
+			}
+
+		});
+		button2.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/2.png")));
+		button2.setBorder(null);
+		button2.setBackground(Color.WHITE);
+		numberButtonPanel.add(button2);
+
+		JButton button3 = new JButton("");
+		button3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 3;
+					}
+				} catch (Exception any) {
+					number = "3";
+				}
+
+				tfAnswer.setText(number);
+				tfAnswer.requestFocus();
+			}
+		});
+		button3.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/3.png")));
+		button3.setBorder(null);
+		button3.setBackground(Color.WHITE);
+		numberButtonPanel.add(button3);
+
+		JButton button4 = new JButton("");
+		button4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 4;
+					}
+				} catch (Exception any) {
+					number = "4";
+				}
+
+				tfAnswer.setText(number);
+				tfAnswer.requestFocus();
+			}
+		});
+		button4.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/4.png")));
+		button4.setBorder(null);
+		button4.setBackground(Color.WHITE);
+		numberButtonPanel.add(button4);
+
+		button5 = new JButton("");
+		button5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 5;
+					}
+				} catch (Exception any) {
+					number = "5";
+				}
+
+				tfAnswer.setText(number);
+				tfAnswer.requestFocus();
+			}
+		});
+		button5.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/5.png")));
+		button5.setBorder(null);
+		button5.setBackground(Color.WHITE);
+		numberButtonPanel.add(button5);
+
+		JButton button6 = new JButton("");
+		button6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 6;
+					}
+				} catch (Exception any) {
+					number = "6";
+				}
+
+				tfAnswer.setText(number);
+				tfAnswer.requestFocus();
+			}
+		});
+		button6.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/6.png")));
+		button6.setBorder(null);
+		button6.setBackground(Color.WHITE);
+		numberButtonPanel.add(button6);
+
+		JButton button7 = new JButton("");
+		button7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 7;
+					}
+				} catch (Exception any) {
+					number = "7";
+				}
+
+				tfAnswer.setText(number);
+				tfAnswer.requestFocus();
+			}
+		});
+		button7.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/7.png")));
+		button7.setBorder(null);
+		button7.setBackground(Color.WHITE);
+		numberButtonPanel.add(button7);
+
+		JButton button8 = new JButton("");
+		button8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 8;
+					}
+				} catch (Exception any) {
+					number = "8";
+				}
+
+				tfAnswer.setText(number);
+				tfAnswer.requestFocus();
+			}
+		});
+		button8.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/8.png")));
+		button8.setBorder(null);
+		button8.setBackground(Color.WHITE);
+		numberButtonPanel.add(button8);
+
+		button9 = new JButton("");
+		button9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 9;
+					}
+				} catch (Exception any) {
+					number = "9";
+				}
+
+				tfAnswer.setText(number);
+				tfAnswer.requestFocus();
+			}
+		});
+		button9.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/9.png")));
+		button9.setBorder(null);
+		button9.setBackground(Color.WHITE);
+		numberButtonPanel.add(button9);
+
+		button0 = new JButton("");
+		button0.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 0;
+					}
+				} catch (Exception any) {
+					number = "0";
+				}
+
+				tfAnswer.setText(number);
+				tfAnswer.requestFocus();
+			}
+		});
+		button0.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/0.png")));
+		button0.setBorder(null);
+		button0.setBackground(Color.WHITE);
+		numberButtonPanel.add(button0);
+
+		buttonDecimal = new JButton("");
+		buttonDecimal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					if (!number.equals(null)) {
+						number = number + ".";
+					}
+				} catch (Exception any) {
+					number = ".";
+				}
+
+				tfAnswer.setText(number);
+				tfAnswer.requestFocus();
+			}
+		});
+		buttonDecimal.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button.png")));
+		buttonDecimal.setBorder(null);
+		buttonDecimal.setBackground(Color.WHITE);
+		numberButtonPanel.add(buttonDecimal);
+
+		buttonEnter = new JButton("");
+		numberButtonPanel.add(buttonEnter);
+		buttonEnter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				calculate();
+			}
+		});
+		buttonEnter.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_enter.png")));
+		buttonEnter.setBorder(null);
+		buttonEnter.setBackground(Color.WHITE);
+
+		JPanel levelPanel = new JPanel();
+		levelPanel.setBounds(62, 314, 488, 125);
+		contentPane.add(levelPanel);
+		levelPanel.setLayout(new GridLayout(1, 0, 0, 0));
+
+		level1Button = new JButton("");
+		level1Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				levelOne = true;
+				levelTwo = false;
+				levelThree = false;
+				tfAnswer.requestFocus();
+			}
+		});
+		level1Button.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_level.png")));
+		level1Button.setBorder(null);
+		level1Button.setBackground(Color.WHITE);
+		levelPanel.add(level1Button);
+
+		level2Button = new JButton("");
+		level2Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				levelOne = false;
+				levelTwo = true;
+				levelThree = false;
+				tfAnswer.requestFocus();
+			}
+		});
+		level2Button.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_level 2.png")));
+		level2Button.setBorder(null);
+		level2Button.setBackground(Color.WHITE);
+		levelPanel.add(level2Button);
+
+		level3Button = new JButton("");
+		level3Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				levelThree = true;
+				levelOne = false;
+				levelTwo = false;
+				tfAnswer.requestFocus();
+			}
+		});
+		level3Button.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_level 3.png")));
+		level3Button.setBorder(null);
+		level3Button.setBackground(Color.WHITE);
+		levelPanel.add(level3Button);
+
+		operationFrame = new JPanel();
+		operationFrame.setBorder(new LineBorder(Color.WHITE, 5));
+		operationFrame.setBounds(65, 63, 65, 247);
+		contentPane.add(operationFrame);
+		operationFrame.setLayout(new GridLayout(4, 0, 0, 0));
+
+		plusButton = new JButton("");
+		plusButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				tfOperation.setText("+");
+				tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/+.png")));
+				tfAnswer.requestFocus();
+			}
+		});
+		plusButton.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button+.png")));
+		plusButton.setBorder(null);
+		plusButton.setBackground(Color.WHITE);
+		operationFrame.add(plusButton);
+
+		devisionButton = new JButton("");
+		devisionButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfOperation.setText("/");
+				tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/++.png")));
+				tfAnswer.requestFocus();
+			}
+		});
+		devisionButton.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button++.png")));
+		devisionButton.setBorder(null);
+		devisionButton.setBackground(Color.WHITE);
+		operationFrame.add(devisionButton);
+
+		mutiplicationButton = new JButton("");
+		mutiplicationButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfOperation.setText("*");
+				tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/x.png")));
+				tfAnswer.requestFocus();
+			}
+		});
+		mutiplicationButton.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_x.png")));
+		mutiplicationButton.setBorder(null);
+		mutiplicationButton.setBackground(Color.WHITE);
+		operationFrame.add(mutiplicationButton);
+
+		minusButton = new JButton("");
+		minusButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfOperation.setText("-");
+				tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/-.png")));
+				tfAnswer.requestFocus();
+			}
+		});
+		minusButton.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button-.png")));
+		minusButton.setBorder(null);
+		minusButton.setBackground(Color.WHITE);
+		operationFrame.add(minusButton);
+
+		JPanel quizFrame = new JPanel();
+		quizFrame.setBorder(new LineBorder(Color.WHITE, 5));
+		quizFrame.setBounds(1154, 63, 73, 247);
+		contentPane.add(quizFrame);
+		quizFrame.setLayout(new GridLayout(4, 0, 0, 0));
+
+		JButton quiz24Button = new JButton("");
+		quiz24Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TWENTYFOUR = true;
+				tfAnswer.requestFocus();
+			}
+		});
+		buttonGroup.add(quiz24Button);
+		quiz24Button.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_q 24.png")));
+		quiz24Button.setBorder(null);
+		quiz24Button.setBackground(Color.WHITE);
+		quizFrame.add(quiz24Button);
+
+		JButton quize20Button = new JButton("");
+		quize20Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TWENTY = true;
+				tfAnswer.requestFocus();
+			}
+		});
+		buttonGroup.add(quize20Button);
+		quize20Button.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_q 20.png")));
+		quize20Button.setBorder(null);
+		quize20Button.setBackground(Color.WHITE);
+		quizFrame.add(quize20Button);
+
+		JButton quize16Button = new JButton("");
+		quize16Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SIXTEEN = true;
+				tfAnswer.requestFocus();
+			}
+		});
+		buttonGroup.add(quize16Button);
+		quize16Button.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_q 16.png")));
+		quize16Button.setBorder(null);
+		quize16Button.setBackground(Color.WHITE);
+		quizFrame.add(quize16Button);
+
+		JButton quize12Button = new JButton("");
+		quize12Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TWELVE = true;
+				tfAnswer.requestFocus();
+			}
+		});
+		buttonGroup.add(quize12Button);
+		quize12Button.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_q 12.png")));
+		quize12Button.setBorder(null);
+		quize12Button.setBackground(Color.WHITE);
+		quizFrame.add(quize12Button);
+
+		JPanel exitPanel = new JPanel();
+		exitPanel.setBounds(56, 452, 117, 302);
+		contentPane.add(exitPanel);
+		exitPanel.setLayout(new GridLayout(0, 1, 0, 0));
+
+		restartButton = new JButton("");
+		restartButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				tfRoundCounter.setText("" + ++round);
+				cor = 0;
+				uncor = 0;
+				running = false;
+				speed = 0;
+				counterCorrect = 1;
+				uncorrectCounter = 1;
+				tfCorrect.setText("");
+				tfIncorrect.setText("");
+				tfAnswer.setText("");
+				tfResult.setText("");
+				tfAnswer.requestFocus();
+				tfResult.setIcon(new ImageIcon(MathGame.class.getResource("")));
+				tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/+.png")));
+				tfAnswer.setText("");
+				Thread t2 = new Thread();
+				running = true;
+				t2.start();
+			}
+		});
+
+		exitPanel.add(restartButton);
+		restartButton.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_restart (1).png")));
+		restartButton.setBorder(null);
+		restartButton.setBackground(Color.WHITE);
+
+		tfRoundCounter = new JTextField("");
+		tfRoundCounter.setHorizontalAlignment(SwingConstants.CENTER);
+		tfRoundCounter.setFont(new Font("DS-Digital", Font.PLAIN, 50));
+		tfRoundCounter.setBorder(null);
+		tfRoundCounter.setBackground(Color.WHITE);
+		exitPanel.add(tfRoundCounter);
+
+		exitButton = new JButton("");
+		exitPanel.add(exitButton);
+		exitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		exitButton.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/button_exit (1).png")));
+		exitButton.setBorder(null);
+		exitButton.setBackground(Color.WHITE);
+
+		rgbColorPanel = new JPanel();
+		rgbColorPanel.setBounds(178, 452, 24, 302);
+		contentPane.add(rgbColorPanel);
+		rgbColorPanel.setBackground(Color.WHITE);
+		rgbColorPanel.setLayout(new GridLayout(3, 0, 0, 0));
+
+		lblGreen = new JButton("");
+		lblGreen.setBackground(Color.WHITE);
+		lblGreen.setBorder(null);
+		rgbColorPanel.add(lblGreen);
+
+		lblBlue = new JButton("");
+		lblBlue.setBackground(Color.WHITE);
+		lblBlue.setBorder(null);
+		rgbColorPanel.add(lblBlue);
+
+		lblRed = new JButton("");
+		lblRed.setBackground(Color.WHITE);
+		lblRed.setBorder(null);
+		rgbColorPanel.add(lblRed);
+		setUndecorated(true);
+		setType(Type.UTILITY);
+		btnHard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				speed = 2600;
+				tfAnswer.requestFocus();
+				lblRed.setBackground(Color.RED);
+				lblBlue.setBackground(Color.WHITE);
+				lblGreen.setBackground(Color.WHITE);
+				//
+//				startThread();
+				//
+			}
+		});
+		btnMid.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				speed = 4000;
+				tfAnswer.requestFocus();
+				lblBlue.setBackground(Color.BLUE);
+				lblGreen.setBackground(Color.WHITE);
+				lblRed.setBackground(Color.WHITE);
+
+				//
+//				startThread();
+				//
+			}
+		});
+		btnEasy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				speed = 9000;
+				tfAnswer.requestFocus();
+				lblGreen.setBackground(Color.GREEN);
+				lblBlue.setBackground(Color.WHITE);
+				lblRed.setBackground(Color.WHITE);
+
+				//
+
+//				startThread();
+				//
+
+			}
+		});
+
+	}
+
+	/**
+	 * 
+	 */
+	protected void calculate() {
+
+		try {
+
+			if (result == (Double.parseDouble(tfFirstNumber.getText()) + Double.parseDouble(tfSecondNumber.getText()))
+					&& result1 == Double.parseDouble(tfFirstNumber.getText())
+					&& result2 == Double.parseDouble(tfSecondNumber.getText())) {
+			} else {
+
+				char[] op = tfOperation.getText().toCharArray();
+
+				switch (op[0]) {
+				case '+':
+					if (Double.parseDouble(tfFirstNumber.getText()) + Double.parseDouble(tfSecondNumber.getText()) == Double
+							.parseDouble(tfAnswer.getText())) {
+						result = Double.parseDouble(tfFirstNumber.getText()) + Double.parseDouble(tfSecondNumber.getText());
+						result1 = Double.parseDouble(tfFirstNumber.getText());
+						result2 = Double.parseDouble(tfSecondNumber.getText());
+						tfCorrect.setText("" + counterCorrect++);
+					} else {
+						tfIncorrect.setText("" + uncorrectCounter++);
+					}
+					break;
+				case '-':
+					if (Double.parseDouble(tfFirstNumber.getText()) - Double.parseDouble(tfSecondNumber.getText()) == Double
+							.parseDouble(tfAnswer.getText())) {
+						result = Double.parseDouble(tfFirstNumber.getText()) - Double.parseDouble(tfSecondNumber.getText());
+						result1 = Double.parseDouble(tfFirstNumber.getText());
+						result2 = Double.parseDouble(tfSecondNumber.getText());
+						tfCorrect.setText("" + counterCorrect++);
+					} else {
+						tfIncorrect.setText("" + uncorrectCounter++);
+					}
+					break;
+				case '/':
+
+					if (Double.parseDouble(tfFirstNumber.getText()) / Double.parseDouble(tfSecondNumber.getText()) == Double
+							.parseDouble(tfAnswer.getText())) {
+						result = Double.parseDouble(tfFirstNumber.getText()) / Double.parseDouble(tfSecondNumber.getText());
+						result1 = Double.parseDouble(tfFirstNumber.getText());
+						result2 = Double.parseDouble(tfSecondNumber.getText());
+						tfCorrect.setText("" + counterCorrect++);
+					} else {
+						tfIncorrect.setText("" + uncorrectCounter++);
+					}
+
+					break;
+				case '*':
+					if (Double.parseDouble(tfFirstNumber.getText()) * Double.parseDouble(tfSecondNumber.getText()) == Double
+							.parseDouble(tfAnswer.getText())) {
+						result = Double.parseDouble(tfFirstNumber.getText()) * Double.parseDouble(tfSecondNumber.getText());
+						result1 = Double.parseDouble(tfFirstNumber.getText());
+						result2 = Double.parseDouble(tfSecondNumber.getText());
+						tfCorrect.setText("" + counterCorrect++);
+					} else {
+						tfIncorrect.setText("" + uncorrectCounter++);
+					}
+					break;
+				}
+			}
+			number = "";
+			tfAnswer.setText(null);
+
+		} catch (NumberFormatException e) {
+		}
+		tfAnswer.requestFocus();
+
+	}
+
+	@Override
+	public void run() {
+		while (running == true) {
+			try {
+				String x1 = tfCorrect.getText();
+				cor = Integer.parseInt(String.valueOf(x1));
+				String x2 = tfIncorrect.getText();
+				uncor = Integer.parseInt(String.valueOf(x2));
+			} catch (NumberFormatException e1) {
+			}
+
+			if (TWELVE == true) {
+
+				if (cor == 3 && uncor == 0) {
+					try {
+						SoundUtils.operationSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfOperation.setText("-");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/-.png")));
+					tfAnswer.requestFocus();
+				}
+				if (cor == 6 && uncor == 0) {
+					try {
+						SoundUtils.operationSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfOperation.setText("*");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/x.png")));
+					tfAnswer.requestFocus();
+				}
+				if (cor == 9 && uncor == 0) {
+					try {
+						SoundUtils.operationSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfOperation.setText("/");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/++.png")));
+					tfAnswer.requestFocus();
+				}
+				if (cor == 12 && uncor == 0) {
+
+					tfOperation.setText("+");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/+.png")));
+					tfAnswer.requestFocus();
+					tfAnswer.setText("Welldone !!! ");
+					tfResult.setIcon(new ImageIcon(MathGame.class.getResource("/DigitsImages/FU8l.gif")));
+					try {
+						SoundUtils.winingSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				if (cor == 12 && uncor > 0) {
+					tfOperation.setText("+");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/+.png")));
+					tfAnswer.requestFocus();
+					tfCorrect.setText("0");
+					tfIncorrect.setText("0");
+					counterCorrect = 0;
+					uncorrectCounter = 0;
+					try {
+						SoundUtils.lossingSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfResult.setText("Try again !!! ");
+//					round++;
+//					tfRound.setText("" + round);
+
+				}
+
+			}
+
+			if (SIXTEEN == true) {
+
+				if (cor == 4 && uncor == 0) {
+					try {
+						SoundUtils.operationSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfOperation.setText("-");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/-.png")));
+					tfAnswer.requestFocus();
+				}
+				if (cor == 8 && uncor == 0) {
+					try {
+						SoundUtils.operationSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfOperation.setText("*");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/x.png")));
+					tfAnswer.requestFocus();
+				}
+				if (cor == 12 && uncor == 0) {
+					try {
+						SoundUtils.operationSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfOperation.setText("/");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/++.png")));
+					tfAnswer.requestFocus();
+				}
+				if (cor == 16 && uncor == 0) {
+
+					tfOperation.setText("+");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/+.png")));
+					tfAnswer.requestFocus();
+					tfAnswer.setText("Welldone !!! ");
+					tfResult.setIcon(new ImageIcon(MathGame.class.getResource("/DigitsImages/FU8l.gif")));
+					try {
+						SoundUtils.winingSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				if (cor == 16 && uncor > 0) {
+					tfOperation.setText("+");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/+.png")));
+					tfAnswer.requestFocus();
+					tfCorrect.setText("0");
+					tfIncorrect.setText("0");
+					counterCorrect = 0;
+					uncorrectCounter = 0;
+					try {
+						SoundUtils.lossingSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfResult.setText("Try again !!! ");
+				}
+
+			}
+			if (TWENTY == true) {
+
+				if (cor == 5 && uncor == 0) {
+					try {
+						SoundUtils.operationSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfOperation.setText("-");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/-.png")));
+					tfAnswer.requestFocus();
+				}
+				if (cor == 10 && uncor == 0) {
+					try {
+						SoundUtils.operationSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfOperation.setText("*");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/x.png")));
+					tfAnswer.requestFocus();
+				}
+				if (cor == 15 && uncor == 0) {
+					try {
+						SoundUtils.operationSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfOperation.setText("/");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/++.png")));
+					tfAnswer.requestFocus();
+				}
+				if (cor == 20 && uncor == 0) {
+
+					tfOperation.setText("+");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/+.png")));
+					tfAnswer.requestFocus();
+					tfAnswer.setText("Welldone !!! ");
+					tfResult.setIcon(new ImageIcon(MathGame.class.getResource("/DigitsImages/FU8l.gif")));
+					try {
+						SoundUtils.winingSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				if (cor == 20 && uncor > 0) {
+					tfOperation.setText("+");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/+.png")));
+					tfAnswer.requestFocus();
+					tfCorrect.setText("0");
+					tfIncorrect.setText("0");
+					counterCorrect = 0;
+					uncorrectCounter = 0;
+					try {
+						SoundUtils.lossingSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfResult.setText("Try again !!! ");
+				}
+
+			}
+			if (TWENTYFOUR == true) {
+
+				if (cor == 6 && uncor == 0) {
+					try {
+						SoundUtils.operationSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfOperation.setText("-");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/-.png")));
+					tfAnswer.requestFocus();
+				}
+				if (cor == 12 && uncor == 0) {
+					try {
+						SoundUtils.operationSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfOperation.setText("*");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/x.png")));
+					tfAnswer.requestFocus();
+				}
+				if (cor == 18 && uncor == 0) {
+					try {
+						SoundUtils.operationSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfOperation.setText("/");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/++.png")));
+					tfAnswer.requestFocus();
+				}
+				if (cor == 24 && uncor == 0) {
+
+					tfOperation.setText("+");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/+.png")));
+					tfAnswer.requestFocus();
+					tfAnswer.setText("Welldone !!! ");
+					tfResult.setIcon(new ImageIcon(MathGame.class.getResource("/DigitsImages/FU8l.gif")));
+					try {
+						SoundUtils.winingSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				if (cor == 24 && uncor > 0) {
+					tfOperation.setText("+");
+					tfOperation.setIcon(new ImageIcon(MathGame.class.getResource("/buttons/+.png")));
+					tfAnswer.requestFocus();
+					tfCorrect.setText("0");
+					tfIncorrect.setText("0");
+					counterCorrect = 0;
+					uncorrectCounter = 0;
+					try {
+						SoundUtils.lossingSound();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					tfResult.setText("Try again !!! ");
+				}
+
+			}
+
+			int easyDigits = 9;
+			int midDigits = 99;
+			int hardDigit = 999;
+			Random rand = new Random();
+
+			if (levelOne == true) {
+				int x = rand.nextInt(easyDigits);
+				int y = rand.nextInt(easyDigits);
+
+				if (x <= 0) {
+					x = 9;
+				}
+				if (y <= 0) {
+					y = 1;
+				}
+				if (x > y) {
+					tfFirstNumber.setText("" + x);
+					tfSecondNumber.setText("" + y);
+				} else {
+					tfFirstNumber.setText("" + y);
+					tfSecondNumber.setText("" + x);
+				}
+
+			} else if (levelTwo == true) {
+				int x = rand.nextInt(midDigits);
+				int y = rand.nextInt(easyDigits);
+				if (x <= 0) {
+					x = 9;
+				}
+				if (y <= 0) {
+					y = 1;
+				}
+				if (x > y && y > 0) {
+					tfFirstNumber.setText("" + x);
+					tfSecondNumber.setText("" + y);
+				} else {
+					tfFirstNumber.setText("" + y);
+					tfSecondNumber.setText("" + x);
+				}
+			} else if (levelThree == true) {
+				int x = rand.nextInt(hardDigit);
+				int y = rand.nextInt(midDigits);
+				if (x <= 0) {
+					x = 9;
+				}
+				if (y <= 0) {
+					y = 1;
+				}
+				if (x > y && y > 0) {
+					tfFirstNumber.setText("" + x);
+					tfSecondNumber.setText("" + y);
+				} else {
+					tfFirstNumber.setText("" + y);
+					tfSecondNumber.setText("" + x);
+				}
+			}
+
+			try {
+				Thread.sleep(speed);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
